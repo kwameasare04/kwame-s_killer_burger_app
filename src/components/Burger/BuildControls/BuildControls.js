@@ -18,7 +18,7 @@ const buildContols = (props) => (
         disabled={props.disabled[ctrl.type]}
         />
     ))}
-    <button>Order Now</button>
+    <button className={classes.OrderButton} disabled={!props.purchasable} >Order Now</button>
     </div>
 );
 

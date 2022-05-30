@@ -18,7 +18,8 @@ state = {
         cheese:0,
         meat:0
     },
-    total_price: 4
+    total_price: 4,
+    purchasable:false
 };
 
 addIngredientsHandler = (type) => {
@@ -32,6 +33,7 @@ addIngredientsHandler = (type) => {
     const old_price = this.state.total_price;
     const new_price = old_price + ingredient_cost;
     this.setState({total_price: new_price, ingredients: updatedIngredients});
+    this.updatePurschaseState(updatedIngredients);
 }
 
 removeIngredientsHandler = (type) => {
@@ -48,6 +50,18 @@ removeIngredientsHandler = (type) => {
     const old_price = this.state.total_price;
     const new_price = old_price - ingredient_cost;
     this.setState({total_price: new_price, ingredients: updatedIngredients});
+    this.updatePurschaseState(updatedIngredients);
+
+}
+
+updatePurschaseState = (ingredients) => {
+const sum = Object.keys(ingredients).map((ingreKey) => {
+    return ingredients[ingreKey];
+}).reduce((sum,el) => {
+    return sum + el;
+} , 0)
+
+this.setState({purchasable: sum > 0})
 
 }
     
@@ -61,6 +75,8 @@ removeIngredientsHandler = (type) => {
          disabledInfo[key] = disabledInfo[key] <= 0
         }
 
+        
+
         return (
             <Aux>
                 <Burger ingredients={this.state.ingredients} />
@@ -68,6 +84,7 @@ removeIngredientsHandler = (type) => {
                  ingredientRemoved={this.removeIngredientsHandler} 
                  disabled={disabledInfo}
                  price={this.state.total_price}
+                 purchasable={this.state.purchasable}
                  />
             </Aux>
         );
